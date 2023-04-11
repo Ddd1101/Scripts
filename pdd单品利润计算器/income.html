@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>营业额计算器</title>
+	<style type="text/css">
+		.container {
+			display: flex;
+			flex-direction: row;
+			align-items: flex-start;
+			justify-content: center;
+		}
+
+		.input, .output {
+			display: flex;
+			flex-direction: column;
+			text-align: left;
+			align-items: flex-start;
+			width: 300px;
+		}
+
+		.input label, .output label {
+			font-size: 16px;
+			margin-bottom: 10px;
+			width: 120px;
+			display: inline-block;
+		}
+
+		input[type="number"] {
+			width: 80px;
+		}
+
+		fieldset {
+			margin-bottom: 20px;
+			padding: 10px;
+			border: none;
+		}
+
+		.output {
+			font-weight: bold;
+			color: red;
+			margin-left: 20px;
+		}
+
+		h1 {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h1>营业额计算器</h1>
+
+	<div class="container">
+		<div class="input">
+			<fieldset>
+				<legend>输入数据</legend>
+				<label for="dealNum">总成交笔数：</label>
+				<input type="number" id="dealNum"><br><br>
+				<label for="unitPrice">单笔推广单价：</label>
+				<input type="number" id="unitPrice"><br><br>
+				<label for="dealAmount">单笔成交金额：</label>
+				<input type="number" id="dealAmount"><br><br>
+				<label for="perPackNum">单条装单量：</label>
+				<input type="number" id="perPackNum"><br><br>
+				<label for="avgExpress">单均快递费：</label>
+				<input type="number" id="avgExpress" value="2.3"><br><br>
+				<label for="perCost">单条成本：</label>
+				<input type="number" id="perCost" value="4"><br><br>
+				<label for="doubleCost">两条装成本：</label>
+				<input type="number" id="doubleCost" value="8"><br><br>
+				<label for="insuranceFee">单笔运费险支出：</label>
+				<input type="number" id="insuranceFee" value="0.46"><br><br>
+				<button onclick="calculate()">计算</button>
+			</fieldset>
+		</div>
+
+		<div class="output">
+			<fieldset>
+				<legend>输出数据</legend>
+				<label>总收入：</label>
+				<span class="output" id="totalIncome"></span><br><br>
+				<label>产品成本：</label>
+				<span class="output" id="totalCost"></span><br><br>
+				<label>快递总支出：</label>
+				<span class="output" id="totalExpress"></span><br><br>
+				<label>运费险总支出：</label>
+				<span class="output" id="totalInsurance"></span><br><br>
+				<label>推广总支出：</label>
+				<span class="output" id="totalPromotion"></span><br><br>
+				<label>净利润：</label>
+				<span class="output" id="netProfit"></span>
+			</fieldset>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function calculate() {
+			// 获取输入数据
+			var dealNum = parseInt(document.getElementById("dealNum").value);
+			var unitPrice = parseFloat(document.getElementById("unitPrice").value);
+			var dealAmount = parseFloat(document.getElementById("dealAmount").value);
+			var perPackNum = parseInt(document.getElementById("perPackNum").value);
+			var avgExpress = parseFloat(document.getElementById("avgExpress").value);
+			var perCost = parseInt(document.getElementById("perCost").value);
+			var doubleCost = parseInt(document.getElementById("doubleCost").value);
+			var insuranceFee = parseFloat(document.getElementById("insuranceFee").value);
+
+			// 计算默认值
+			if (isNaN(avgExpress)) avgExpress = 2.3;
+			if (isNaN(perCost)) perCost = 4;
+			if (isNaN(doubleCost)) doubleCost = 8;
+			if (isNaN(insuranceFee)) insuranceFee = 0.46;
+
+			// 计算总收入
+			var totalIncome = dealNum * dealAmount;
+			document.getElementById("totalIncome").innerHTML = totalIncome.toFixed(2);
+
+			// 计算产品成本
+			var totalCost = perPackNum * perCost + (dealNum - perPackNum) * doubleCost;
+			document.getElementById("totalCost").innerHTML = totalCost.toFixed(2);
+
+			// 计算快递总支出
+			var totalExpress = dealNum * avgExpress;
+			document.getElementById("totalExpress").innerHTML = totalExpress.toFixed(2);
+
+			// 计算运费险总支出
+			var totalInsurance = dealNum * insuranceFee;
+			document.getElementById("totalInsurance").innerHTML = totalInsurance.toFixed(2);
+
+			// 计算推广总支出
+			var totalPromotion = dealNum * unitPrice;
+			document.getElementById("totalPromotion").innerHTML = totalPromotion.toFixed(2);
+
+			// 计算净利润
+			var netProfit = totalIncome - totalCost - totalExpress - totalInsurance - totalPromotion;
+			document.getElementById("netProfit").innerHTML = netProfit.toFixed(2);
+		}
+	</script>
+</body>
+</html>
